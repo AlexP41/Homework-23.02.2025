@@ -1,0 +1,3 @@
+is a simple sample text file It contains some words that might be considered inappropriate or unwanted .
+Some people use bad words in their writing but file should be cleaned from all such words .
+Let's make file clean and friendly .
