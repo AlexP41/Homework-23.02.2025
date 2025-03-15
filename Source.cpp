@@ -319,17 +319,19 @@ string fileToPushDataIn = "Exercise3-push-data.txt";
 
 ifstream file1(ukranianDataFile, ios::in);
 ifstream file2(englishDataFile, ios::in);
-ofstream file3(fileToPushDataIn, ios::out);
 
-if (!file1 || !file2 || !file3) {
+
+if (!file1 || !file2 ) {
 	cerr << "Помилка відкриття файлу!" << endl;
 	return 1;
 }
 
 string current_line1, current_line2;
 int userChoice;
+bool menuOn = true;
 
-while (true) {
+
+while (menuOn) {
 	cout << endl;
 	cout << "\033[033mМеню:\n";
 	cout << "1. З української на англійську \n";
@@ -359,36 +361,67 @@ while (true) {
 
 	}
 
+	ofstream file3;
 
 	switch (userChoice)
 	{
 	case 1: 
+			file3.open(fileToPushDataIn, ios::out);
+
+			if (!file3) {
+				cerr << "Помилка відкриття файлу!" << endl;
+				return 1;
+			}
+
 			cout << endl;
 			while (getline(file1, current_line1)) {
 				file3 << transliterateFromUkrToEn(current_line1) << endl;
+				file3.flush();
 			}
 			cout << endl;
-			cout << "Транслітерація з української мови на англійську завершена!\nРезультат взятий із файлу \033[035m" << ukranianDataFile << "\033[0m збережений у файл з ім'ям \033[038m" << fileToPushDataIn << "\033[0m" << endl;
+			cout << "Транслітерація з української мови на англійську завершена!\nРезультат взятий із файлу \033[035m" << ukranianDataFile << "\033[0m збережений у файл з ім'ям \033[036m" << fileToPushDataIn << "\033[0m" << endl;
 			cout << endl;
+			file1.clear();
+			file1.seekg(0);
+			file3.close();
 			break;
+
 		
 	case 2:
+
+		file3.open(fileToPushDataIn, ios::out);
+
+		if (!file3) {
+			cerr << "Помилка відкриття файлу!" << endl;
+			return 1;
+		}
+
+		file3.clear();
 			cout << endl;
 			while (getline(file2, current_line2)) {
 				file3 << reverseTransliterateFromEnToUkr(current_line2) << endl;
+				file3.flush();
 			}
 			cout << endl;
-			cout << "Транслітерація з англійської мови на українську завершена!\nРезультат взятий із файлу \033[035m" << englishDataFile << "\033[0m збережений у файл з ім'ям \033[038m" << fileToPushDataIn << "\033[0m" << endl;
+			cout << "Транслітерація з англійської мови на українську завершена!\nРезультат взятий із файлу \033[035m" << englishDataFile << "\033[0m збережений у файл з ім'ям \033[036m" << fileToPushDataIn << "\033[0m" << endl;
 			cout << endl;
+			file2.clear();
+			file2.seekg(0);
+			file3.close();
 			break;
 		
 	case 3:
 			cout << endl;
 			file1.close();
 			file2.close();
+
+			resetFile(fileToPushDataIn);
+
 			file3.close();
 			cout << "Вихід...\n";
+			menuOn = false;
 			break;
+
 	default:
 		break;
 	}
